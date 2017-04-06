@@ -1,0 +1,58 @@
+#include "stdafx.h"
+#include <iostream>
+#include <conio.h>
+#include <fstream>
+#include <string>
+using namespace std;
+struct student {
+	string name, surname, otchestvo, year, stipa;
+};
+struct stud_out4sort {
+	string name, surname, otchestvo;
+	int year;
+	char stipa;
+};
+string st_fill(string _1) {	//функция для подстановки имени, чтобы 1000 раз не забивать вручную данные структуры
+	string _2;
+	cout << _1, ": ";
+	cin >> _2;
+	return _2;
+}
+void fwrite(student x[], int a, string s) {	//функция записи в файл
+	ofstream file(s);
+	for (int i = 0; i < a; i++)
+		file << x[i].surname << ":" << x[i].name << ":" << x[i].otchestvo << ":" << x[i].stipa << ":" << x[i].year << "\n";
+	file.close();
+}
+int main()
+{
+	setlocale(LC_ALL, "rus");
+	int a;
+	cout << "Размер группы: ";
+	cin >> a;
+	student *table = new student[a];	//динамический массив размерностью а
+	stud_out4sort *table2 = new stud_out4sort[a];	//массив для сортировки и рассовывания по структуре считываемых данных с файла
+	string *strings = new string[a];	//массив  не нужный, наверное
+	string str;
+	for (int i = 0; i < a; i++) {
+		system("cls");
+		table[i].surname = st_fill("фамилия: ");
+		table[i].name = st_fill("имя: ");
+		table[i].otchestvo = st_fill("отчество: ");
+		table[i].stipa = st_fill("стипендия(0/1): ");
+		table[i].year =st_fill("год поступления: ");
+	}
+	string s1 = "C:\\kek\\file.txt";	//путь для записи
+	string s2 = "C:\\kek\\file.txt";	//путь для считывания
+	fwrite(table, a, s1);
+	ifstream file(s2, ios::in);
+	int i = 0;
+	while (file) {
+		getline(file, str);
+		strings[i] = str;
+		i++;
+	}
+	file.close();
+	system("pause");
+	return 0;
+}
